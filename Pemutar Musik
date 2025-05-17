@@ -151,7 +151,6 @@ vector<string> insertion_sort(vector<string>& arr) {
 }
 
 void main_menu(Tree& koleksi_musik) {
-    vector<string> daftar_lagu_terputar;
     while (true) {
         cout << "\n" << string(50, '=') << endl;
         cout << string(15, ' ') << "PROGRAM PEMUTAR MUSIK" << endl;
@@ -195,14 +194,14 @@ void main_menu(Tree& koleksi_musik) {
 
                 if (!daftar_artis_lagu.empty()) {
                     cout << "\n" << string(50, '-') << endl;
-                    cout << string(10, ' ') << "HASIL PENCARIAN LAGU" << endl;
+                    cout << string(10, ' ') << "MUSIK YANG SEDANG DIPUTAR" << endl;
                     cout << string(50, '-') << endl;
                     for (size_t i = 0; i < daftar_artis_lagu.size(); ++i) {
                         cout << "  " << i + 1 << ". " << daftar_artis_lagu[i].second << " - " << daftar_artis_lagu[i].first << endl;
                     }
                     cout << string(50, '-') << endl;
                 } else {
-                    cout << "\n Tidak ditemukan lagu dengan nama tersebut." << endl;
+                    cout << "\nTidak ditemukan lagu dengan nama tersebut." << endl;
                 }
             } else if (pilihan_cari == "2") {
                 string nama_artis;
@@ -210,25 +209,25 @@ void main_menu(Tree& koleksi_musik) {
                 cin.ignore();
                 getline(cin, nama_artis);
 
-                vector<string> artis_ditemukan;
-                auto traversal = koleksi_musik.preorder_traversal();
-                for (const auto& pair : traversal) {
-                    if (kmp_search(pair.first, nama_artis)) {
-                        artis_ditemukan.push_back(pair.first);
-                    }
-                }
+                vector<string> lagu_artis = koleksi_musik.cari_lagu_berdasarkan_artis(nama_artis);
 
-                if (!artis_ditemukan.empty()) {
-                    artis_ditemukan = insertion_sort(artis_ditemukan);
-                    cout << "\n" << string(50, '-') << endl;
-                    cout << string(10, ' ') << "ARTIS YANG DITEMUKAN" << endl;
-                    cout << string(50, '-') << endl;
-                    for (size_t i = 0; i < artis_ditemukan.size(); ++i) {
-                        cout << "  " << i + 1 << ". " << artis_ditemukan[i] << endl;
+                if (!lagu_artis.empty()) {
+                    cout << "\nLagu-lagu dari " << nama_artis << " adalah:" << endl;
+                    for (size_t i = 0; i < lagu_artis.size(); ++i) {
+                        cout << "  " << i + 1 << ". " << lagu_artis[i] << endl;
                     }
-                    cout << string(50, '-') << endl;
+
+                    int pilihan_lagu;
+                    cout << "Pilih nomor lagu yang ingin diputar: ";
+                    cin >> pilihan_lagu;
+
+                    if (pilihan_lagu >= 1 && pilihan_lagu <= lagu_artis.size()) {
+                        cout << "\nMemutar lagu: " << lagu_artis[pilihan_lagu - 1] << endl;
+                    } else {
+                        cout << "\nPilihan tidak valid." << endl;
+                    }
                 } else {
-                    cout << "\n Artis tidak ditemukan." << endl;
+                    cout << "\nArtis tidak ditemukan atau tidak memiliki lagu." << endl;
                 }
             } else {
                 cout << "Pilihan tidak valid." << endl;
@@ -240,7 +239,7 @@ void main_menu(Tree& koleksi_musik) {
             cout << string(50, '=') << endl;
             break;
         } else {
-            cout << "\n Pilihan tidak valid. Silakan coba lagi." << endl;
+            cout << "\nPilihan tidak valid. Silakan coba lagi." << endl;
         }
     }
 }
@@ -250,9 +249,24 @@ int main() {
     
     koleksi_musik.insert("Reality Club", "Anything You Want");
     koleksi_musik.insert("Reality Club", "Am I Bothering You?");
+    koleksi_musik.insert("Reality Club", "Telenovia");
+    koleksi_musik.insert("Reality Club", "2112");
+    koleksi_musik.insert("Reality Club", "Is it the answer");
     koleksi_musik.insert("ABBA", "Dancing Queen");
+    koleksi_musik.insert("ABBA", "Slipping Trough My Fingers");
+    koleksi_musik.insert("ABBA", "Lay All Your Love On Me");
+    koleksi_musik.insert("ABBA", "Money,Money,Money");
+    koleksi_musik.insert("ABBA", "The Winner Takes It All");
     koleksi_musik.insert("Queen", "Bohemian Rhapsody");
+    koleksi_musik.insert("Queen", "Don't Stop Me Know");
+    koleksi_musik.insert("Queen", "Under Pressure");
+    koleksi_musik.insert("Queen", "Killer Queen");
+    koleksi_musik.insert("Queen", "Somebody to Love");
     koleksi_musik.insert("Sheila on 7", "Sephia");
+    koleksi_musik.insert("Sheila on 7", "Kita");
+    koleksi_musik.insert("Sheila on 7", "Film favorit");
+    koleksi_musik.insert("Sheila on 7", "Pemuja rahasia");
+    koleksi_musik.insert("Sheila on 7", "Sebuah kisah klasik");
 
     main_menu(koleksi_musik);
     
